@@ -1,7 +1,7 @@
 import time
 import requests
 
-# ==================== 🎛️ 跑馬燈速限狂飆面板 ====================
+# ==================== 🎛️ 跑馬燈控制面板 ====================
 WEBHOOK_URL = "https://discord.com/api/webhooks/1517792246374731857/mcJ-748jA7WdM4DD0KsKQg9URpD-BUOCw91-8ksZjOuz4b8-P0FCr7lJYK3cWMkCOKMq"
 
 GIF_URL = "https://cdn.discordapp.com/attachments/1191437102353744096/1517791192971214858/9154af24aeb650943a3c7e2ee38504b45ca51740d251f95bba16d093acebe5d7.gif?ex=6a3790b3&is=6a363f33&hm=5c294844fd02dcb5650436b5ed323e07ee1c690301c84246cb2a65109742d80c&"
@@ -13,13 +13,8 @@ TEXT_LIST = [
 ]
 
 TEXT_COLOR = "黃色" 
-
-# 【核心突破 1：暴走步長】原本是 1 (慢速挪動)，現在改成 3！代表一次跨 3 個字，速度直接飆升 3 倍！
 STEP_SIZE = 3  
-
-# 【核心突破 2：極限延時】調整到 Discord 官方容許的最高速極限 2.0 秒，請絕對不要再調低了！
 SPEED = 2.0  
-
 EMBED_COLOR = 16753920  
 # ==============================================================
 
@@ -31,23 +26,33 @@ color_start = COLOR_CODES.get(TEXT_COLOR, "[1;37m")
 color_end = "[0m"
 display_width = 15  
 
-def run_fast_marquee():
-    print("🚀 正在發送【急速狂飆版】跑馬燈...")
-    initial_payload = {
+def run_no_flicker_marquee():
+    print("🚀 正在發送【雙層絕不閃爍版】公告...")
+    
+    # 1. 發送第一則訊息：純文字跑馬燈框
+    marquee_payload = {
         "embeds": [{
             "title": "📢 系統進階跑馬燈", 
             "description": "```ansi\n[ 正在換班初始化... ]\n```", 
+            "color": EMBED_COLOR
+        }]
+    }
+    res_marquee = requests.post(f"{WEBHOOK_URL}?wait=true", json=marquee_payload)
+    if res_marquee.status_code != 200:
+        print("❌ 跑馬燈建立失敗")
+        return
+    
+    marquee_message_id = res_marquee.json().get("id")
+    marquee_message_url = f"{WEBHOOK_URL}/messages/{marquee_message_id}"
+    
+    # 2. 發送第二則訊息：固定放底部的 GIF，此後永遠不去 PATCH 編輯它，保證絕不閃爍！
+    gif_payload = {
+        "embeds": [{
             "color": EMBED_COLOR,
             "image": {"url": GIF_URL}
         }]
     }
-    post_res = requests.post(f"{WEBHOOK_URL}?wait=true", json=initial_payload)
-    if post_res.status_code != 200:
-        print("❌ 發送失敗")
-        return
-        
-    new_message_id = post_res.json().get("id")
-    message_url = f"{WEBHOOK_URL}/messages/{new_message_id}"
+    requests.post(WEBHOOK_URL, json=gif_payload)
     
     start_time = time.time()
     max_duration = 18000  
@@ -57,7 +62,6 @@ def run_fast_marquee():
             extended_text = current_text + " " * display_width + current_text
             total_len = len(current_text) + display_width
             
-            # 使用 STEP_SIZE 讓迴圈跳著走，達到物理加速效果
             i = 0
             while i < total_len:
                 if time.time() - start_time >= max_duration:
@@ -65,30 +69,29 @@ def run_fast_marquee():
                     
                 marquee_frame = extended_text[i : i + display_width]
                 
+                # ── 核心修正：payload 不再夾帶任何 image，只更新文字 ──
                 payload = {
                     "embeds": [{
-                        "title": "📢 官方訊息",
+                        "title": "📢 系統進階跑馬燈",
                         "description": f"```ansi\n[ {color_start}{marquee_frame}{color_end} ]\n```",
-                        "color": EMBED_COLOR,
-                        "image": {"url": GIF_URL}
+                        "color": EMBED_COLOR
                     }]
                 }
 
                 try:
-                    res = requests.patch(message_url, json=payload)
+                    res = requests.patch(marquee_message_url, json=payload)
                     if res.status_code == 429:
                         retry_after = res.json().get("retry_after", 5)
                         time.sleep(retry_after)
-                        # 如果卡住被官方處罰，本次不推進字數
                         continue
                 except Exception as e:
                     print(f"💥 連線中斷: {e}")
                     return
 
                 time.sleep(SPEED) 
-                i += STEP_SIZE  # 每次跳過指定字數
+                i += STEP_SIZE  
                 
     print("⏰ 5小時安全交棒！")
 
 if __name__ == "__main__":
-    run_fast_marquee()
+    run_no_flicker_marquee()
