@@ -104,7 +104,7 @@ def run_supreme_marquee():
                     f"{c_border1}▰▰▰▰▰▰ ✨ 星星所向  🌠  ▰▰▰▰▰▰{color_end}\n"
                     f"  {c_text1}{top_frame}{color_end}\n"
                     f"{c_border1}▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰{color_end}\n"
-                    f"{c_border2}▰▰▰▰▰ 💫 星河皆是你  🌙  ▰▰▰▰▰{color_end}\n"
+                    f"{c_border2}▰▰▰▰▰▰ 💫 星河皆是你  🌙  ▰▰▰▰▰▰{color_end}\n"
                     f"  {c_text2}{bot_frame}{color_end}\n"
                     f"{c_border2}▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰{color_end}\n"
                     f"```"
