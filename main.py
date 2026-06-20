@@ -6,16 +6,22 @@ WEBHOOK_URL = "https://discord.com/api/webhooks/1517792246374731857/mcJ-748jA7Wd
 
 GIF_URL = "https://cdn.discordapp.com/attachments/1191437102353744096/1517791192971214858/9154af24aeb650943a3c7e2ee38504b45ca51740d251f95bba16d093acebe5d7.gif?ex=6a3790b3&is=6a363f33&hm=5c294844fd02dcb5650436b5ed323e07ee1c690301c84246cb2a65109742d80c&"
 
+NEW_TITLE = "✨ 🍀歡迎來到噬月陌姎 ✨"
+
 TEXT_LIST = [
-    " 🚨 這是第一句：伺服器重要公告測試中！ ",
-    " 💎 這是第二句：歡迎大家加入，贊助永久開放！ ",
-    " ➔ 這是第三句：請大家務必詳閱管理守則！ "
+    " 歡迎 ",
+    " 來到 ",
+    " 噬月陌姎 "
 ]
 
-TEXT_COLOR = "黃色" 
+# ── 🟢 核心修改 1：滾動文字設定為綠色 ──
+TEXT_COLOR = "綠色" 
+
+# ── 🟢 核心修改 2：卡片左側邊框同步設定為綠色數字 ──
+EMBED_COLOR = 5763719  
+
 STEP_SIZE = 3  
 SPEED = 2.0  
-EMBED_COLOR = 16753920  
 # ==============================================================
 
 COLOR_CODES = {
@@ -26,14 +32,14 @@ color_start = COLOR_CODES.get(TEXT_COLOR, "[1;37m")
 color_end = "[0m"
 display_width = 15  
 
-def run_no_flicker_marquee():
-    print("🚀 正在發送【雙層絕不閃爍版】公告...")
+def run_green_marquee():
+    print("🚀 正在發送【全綠色高亮版】公告...")
     
-    # 1. 發送第一則訊息：純文字跑馬燈框
+    # 1. 發送第一則訊息：跑馬燈框
     marquee_payload = {
         "embeds": [{
-            "title": "📢 系統進階跑馬燈", 
-            "description": "```ansi\n[ 正在換班初始化... ]\n```", 
+            "title": NEW_TITLE, 
+            "description": "```ansi\n 正在換班初始化...\n```", 
             "color": EMBED_COLOR
         }]
     }
@@ -45,7 +51,7 @@ def run_no_flicker_marquee():
     marquee_message_id = res_marquee.json().get("id")
     marquee_message_url = f"{WEBHOOK_URL}/messages/{marquee_message_id}"
     
-    # 2. 發送第二則訊息：固定放底部的 GIF，此後永遠不去 PATCH 編輯它，保證絕不閃爍！
+    # 2. 發送第二則訊息：固定底部的 GIF
     gif_payload = {
         "embeds": [{
             "color": EMBED_COLOR,
@@ -69,11 +75,10 @@ def run_no_flicker_marquee():
                     
                 marquee_frame = extended_text[i : i + display_width]
                 
-                # ── 核心修正：payload 不再夾帶任何 image，只更新文字 ──
                 payload = {
                     "embeds": [{
-                        "title": "📢 系統進階跑馬燈",
-                        "description": f"```ansi\n[ {color_start}{marquee_frame}{color_end} ]\n```",
+                        "title": "NEW_TITLE",
+                        "description": f"```ansi\n{color_start}{marquee_frame}{color_end}\n```",
                         "color": EMBED_COLOR
                     }]
                 }
@@ -94,4 +99,4 @@ def run_no_flicker_marquee():
     print("⏰ 5小時安全交棒！")
 
 if __name__ == "__main__":
-    run_no_flicker_marquee()
+    run_green_marquee()
