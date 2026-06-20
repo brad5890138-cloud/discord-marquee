@@ -2,58 +2,54 @@ import time
 import requests
 import random
 
-# ==================== 💎 豪華超跑自訂控制面板 ====================
+# ==================== 👑 至尊皇家自訂控制面板 ====================
 WEBHOOK_URL = "https://discord.com/api/webhooks/1517792246374731857/mcJ-748jA7WdM4DD0KsKQg9URpD-BUOCw91-8ksZjOuz4b8-P0FCr7lJYK3cWMkCOKMq"
 
-# 【豪華配備 1：最正宗的超炫動態 GIF】
+# 【至尊配備 1：更具動感的背景 GIF 網址】
 GIF_URL = "https://cdn.discordapp.com/attachments/1191437102353744096/1517791192971214858/9154af24aeb650943a3c7e2ee38504b45ca51740d251f95bba16d093acebe5d7.gif?ex=6a3790b3&is=6a363f33&hm=5c294844fd02dcb5650436b5ed323e07ee1c690301c84246cb2a65109742d80c&"
 
-# 【豪華配備 2：客製化雙軌道台詞】
-# 🚀 上軌道：從右往左狂飆（主要公告）
+# 【至尊配備 2：客製化雙軌道台詞（前後加入閃爍星光粒子）】
 TOP_TEXTS = [
-    " 🍀 歡迎來到~~噬月陌姎 ",
-    " 💬 文字聊天交請至🔐幹話一堆《2026》 ",
-    " 🔊 語音聊天請至下方房間 "
+    "  🍀 歡迎來到~~噬月陌姎 🪐  ",
+    "  💬 文字聊天請至 ➔ 🔐幹話一堆《2026》  ",
+    "  🔊  語音聊天請至下方房間  "
 ]
 
-# 📡 下軌道：從左往右倒退滾動（副標題細節）
 BOTTOM_TEXTS = [
-    " ✨ 一起交友聊天 ",
-    " 🤪 這裡人超憨超胖 ",
-    " 👋 歡迎加入!! "
+    " ✨  一起交友聊天玩遊戲  ✨ ",
+    " 🤪  這裡人超憨超胖 🤪  ",
+    " 👋  歡迎加入!!!!   👋 "
 ]
 
 STEP_SIZE = 3  # 每次前進字數
-SPEED = 2.0  # 強烈建議維持 2.0 秒極速極限，避免被 Discord 限速
+SPEED = 2.0  # 維持 2.0 秒極速極限，流暢且安全
 # ==============================================================
 
-# 霓虹跑馬燈全彩池
-EMBED_NEON_COLORS = [
-    16711680, 65280, 255, 16776960, 16711935, 65535, 16777215
-]
+# 至尊霓虹 RGB 顏色池
+EMBED_NEON_COLORS = [16711680, 65280, 255, 16776960, 16711935, 65535, 16777215]
 ANSI_COLORS = [
     "[1;31m", "[1;32m", "[1;33m", "[1;34m", "[1;35m", "[1;36m", "[1;37m"
 ]
 color_end = "[0m"
-display_width = 18  # 稍微加寬顯示畫布
+display_width = 18  
 
-def run_luxury_marquee():
-    print("💎 正在發送【雙軌對撞流星霓虹豪華版】公告...")
+def run_supreme_marquee():
+    print("💎 正在發送【至尊皇家璀璨電競版】公告...")
     
-    # 豪華裝飾星光標題
-    luxury_title = "⭐ ✨ 🌟【 噬月陌姎 🪐 皇家公告系統 】🌟 ✨ ⭐"
+    # 頂級奢華裝飾標題
+    luxury_title = "🔱 ✨ 🌟【 歡迎加入噬月陌姎  】🌟 ✨ 🔱"
     
     # 1. 創立上層雙軌跑馬燈框
     marquee_payload = {
         "embeds": [{
             "title": luxury_title, 
-            "description": "```ansi\n 🌟 皇家豪華系統正在全速初始化...\n```", 
+            "description": "```ansi\n ⚡ 皇家至尊電競系統正在全速加載 RGB 燈效...\n```", 
             "color": 16777215
         }]
     }
     res_marquee = requests.post(f"{WEBHOOK_URL}?wait=true", json=marquee_payload)
     if res_marquee.status_code != 200:
-        print("❌ 豪華跑馬燈建立失敗")
+        print("❌ 跑馬燈建立失敗")
         return
     
     marquee_message_id = res_marquee.json().get("id")
@@ -70,8 +66,6 @@ def run_luxury_marquee():
     
     start_time = time.time()
     max_duration = 18000  # 5小時微軟接力限制
-    
-    # 確保兩軌道台詞數量一致
     loop_count = min(len(TOP_TEXTS), len(BOTTOM_TEXTS))
     
     while time.time() - start_time < max_duration:
@@ -89,10 +83,14 @@ def run_luxury_marquee():
                 if time.time() - start_time >= max_duration:
                     break
                 
-                color_top = random.choice(ANSI_COLORS)
-                color_bot = random.choice(ANSI_COLORS)
+                # 隨時為每一條框線、每一行文字隨機抽籤色彩，達到斑斕霓虹效果
+                c_border1 = random.choice(ANSI_COLORS)
+                c_border2 = random.choice(ANSI_COLORS)
+                c_text1 = random.choice(ANSI_COLORS)
+                c_text2 = random.choice(ANSI_COLORS)
                 current_embed_color = random.choice(EMBED_NEON_COLORS)
                 
+                # 擷取雙軌畫面
                 top_frame = top_extended[i : i + display_width]
                 
                 bot_pos = (max_len - i) % len(bot_extended)
@@ -100,14 +98,15 @@ def run_luxury_marquee():
                 if len(bot_frame) < display_width:
                     bot_frame = (bot_frame + " " * display_width)[:display_width]
                 
+                # 【優化重點：外框同步加入 ANSI 炫彩顏色，框線也會跟著變色！】
                 description_content = (
                     f"```ansi\n"
-                    f"┏━━━━ 🛰️ UPPER RAIL ━━━━━━━━━━━━━━━━┓\n"
-                    f"  {color_top}{top_frame}{color_end}\n"
-                    f"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n"
-                    f"┏━━━━ 📡 LOWER RAIL ━━━━━━━━━━━━━━━━┓\n"
-                    f"  {color_bot}{bot_frame}{color_end}\n"
-                    f"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n"
+                    f"{c_border1}◢━━━━━ ✨ 星星所向 (✨) ━━━━━━━◣{color_end}\n"
+                    f"  {c_text1}{top_frame}{color_end}\n"
+                    f"{c_border1}◥━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━◤{color_end}\n"
+                    f"{c_border2}◢━━━━━ ✨ 星河皆是你 (✨) ━━━━━━━◣{color_end}\n"
+                    f"  {c_text2}{bot_frame}{color_end}\n"
+                    f"{c_border2}◥━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━◤{color_end}\n"
                     f"```"
                 )
                 
@@ -138,4 +137,4 @@ def run_luxury_marquee():
     print("⏰ 5小時豪華交棒！")
 
 if __name__ == "__main__":
-    run_luxury_marquee()
+    run_supreme_marquee()
