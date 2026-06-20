@@ -101,10 +101,10 @@ def run_supreme_marquee():
                 # 【優化重點：外框同步加入 ANSI 炫彩顏色，框線也會跟著變色！】
                 description_content = (
                     f"```ansi\n"
-                    f"{c_border1}▰▰▰▰▰▰ ✨ 星星所向  ✨  ▰▰▰▰▰▰{color_end}\n"
+                    f"{c_border1}▰▰▰▰▰▰ ✨ 星星所向  🌠  ▰▰▰▰▰▰{color_end}\n"
                     f"  {c_text1}{top_frame}{color_end}\n"
                     f"{c_border1}▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰{color_end}\n"
-                    f"{c_border2}▰▰▰▰▰ ✨ 星河皆是你  ✨  ▰▰▰▰▰{color_end}\n"
+                    f"{c_border2}▰▰▰▰▰ 💫 星河皆是你  🌙  ▰▰▰▰▰{color_end}\n"
                     f"  {c_text2}{bot_frame}{color_end}\n"
                     f"{c_border2}▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰{color_end}\n"
                     f"```"
