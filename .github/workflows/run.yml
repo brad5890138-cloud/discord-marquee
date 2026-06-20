@@ -1,0 +1,28 @@
+name: Discord Marquee 24/7
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # 支援手動開關
+  schedule:
+    - cron: '0 */5 * * *' # 每 5 小時微軟伺服器會自動重新接力啟動一次
+
+jobs:
+  run-marquee:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        pip install requests
+
+    - name: Run Marquee Bot
+      run: |
+        python main.py
