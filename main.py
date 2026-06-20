@@ -1,46 +1,44 @@
 import time
 import requests
 
-# ==================== 🎛️ 跑馬燈控制面板 ====================
+# ==================== 🎛️ 三色輪播自訂面板 ====================
 WEBHOOK_URL = "https://discord.com/api/webhooks/1517792246374731857/mcJ-748jA7WdM4DD0KsKQg9URpD-BUOCw91-8ksZjOuz4b8-P0FCr7lJYK3cWMkCOKMq"
 
 GIF_URL = "https://cdn.discordapp.com/attachments/1191437102353744096/1517791192971214858/9154af24aeb650943a3c7e2ee38504b45ca51740d251f95bba16d093acebe5d7.gif?ex=6a3790b3&is=6a363f33&hm=5c294844fd02dcb5650436b5ed323e07ee1c690301c84246cb2a65109742d80c&"
 
-NEW_TITLE = "✨ 🍀歡迎來到噬月陌姎 ✨"
+NEW_TITLE = "✨ 🍀噬月陌姎 ✨"
 
-TEXT_LIST = [
-    " 歡迎 ",
-    " 來到 ",
-    " 噬月陌姎 "
-]
+# 【黃色句子】
+TEXT_YELLOW = "新朋友歡迎加入 "
 
-# ── 🟢 核心修改 1：滾動文字設定為綠色 ──
-TEXT_COLOR = "綠色" 
+# 【綠色句子】
+TEXT_GREEN = " 噬月陌姎 "
 
-# ── 🟢 核心修改 2：卡片左側邊框同步設定為綠色數字 ──
-EMBED_COLOR = 5763719  
+# 【粉紅句子】
+TEXT_PINK = " 一起聊天玩樂 "
 
 STEP_SIZE = 3  
 SPEED = 2.0  
 # ==============================================================
 
-COLOR_CODES = {
-    "紅色": "[1;31m", "綠色": "[1;32m", "黃色": "[1;33m",
-    "藍色": "[1;34m", "粉色": "[1;35m", "青色": "[1;36m", "白色": "[1;37m"
-}
-color_start = COLOR_CODES.get(TEXT_COLOR, "[1;37m")
+# 定義三組顏色對應的 (ANSI文字顏色, EMBED卡片邊框顏色)
+COLOR_CONFIGS = [
+    {"text": "[1;33m", "embed": 16776960}, # 黃色 (卡片邊框同步變黃)
+    {"text": "[1;32m", "embed": 5763719},  # 綠色 (卡片邊框同步變綠)
+    {"text": "[1;35m", "embed": 15418782}  # 粉紅 (卡片邊框同步變粉)
+]
 color_end = "[0m"
 display_width = 15  
 
-def run_green_marquee():
-    print("🚀 正在發送【全綠色高亮版】公告...")
+def run_multicolor_marquee():
+    print("🚀 正在發送【三色霓虹輪播版】公告...")
     
-    # 1. 發送第一則訊息：跑馬燈框
+    # 1. 發送第一則訊息：跑馬燈框（初始黃色邊框）
     marquee_payload = {
         "embeds": [{
             "title": NEW_TITLE, 
-            "description": "```ansi\n 正在換班初始化...\n```", 
-            "color": EMBED_COLOR
+            "description": "```ansi\n 正在換班三色初始化...\n```", 
+            "color": COLOR_CONFIGS[0]["embed"]
         }]
     }
     res_marquee = requests.post(f"{WEBHOOK_URL}?wait=true", json=marquee_payload)
@@ -51,10 +49,10 @@ def run_green_marquee():
     marquee_message_id = res_marquee.json().get("id")
     marquee_message_url = f"{WEBHOOK_URL}/messages/{marquee_message_id}"
     
-    # 2. 發送第二則訊息：固定底部的 GIF
+    # 2. 發送第二則訊息：固定底部的 GIF (維持最初綠色邊框)
     gif_payload = {
         "embeds": [{
-            "color": EMBED_COLOR,
+            "color": COLOR_CONFIGS[1]["embed"],
             "image": {"url": GIF_URL}
         }]
     }
@@ -63,8 +61,19 @@ def run_green_marquee():
     start_time = time.time()
     max_duration = 18000  
     
+    # 將三句話與三個顏色綁定在一起
+    task_list = [
+        {"text": TEXT_YELLOW, "color": COLOR_CONFIGS[0]},
+        {"text": TEXT_GREEN, "color": COLOR_CONFIGS[1]},
+        {"text": TEXT_PINK, "color": COLOR_CONFIGS[2]}
+    ]
+    
     while time.time() - start_time < max_duration:
-        for current_text in TEXT_LIST:
+        for task in task_list:
+            current_text = task["text"]
+            color_start = task["color"]["text"]
+            current_embed_color = task["color"]["embed"]
+            
             extended_text = current_text + " " * display_width + current_text
             total_len = len(current_text) + display_width
             
@@ -75,11 +84,12 @@ def run_green_marquee():
                     
                 marquee_frame = extended_text[i : i + display_width]
                 
+                # 每次 PATCH 不僅變更文字，連 Embed 邊框顏色也同步切換！
                 payload = {
                     "embeds": [{
-                        "title": "NEW_TITLE",
+                        "title": NEW_TITLE,
                         "description": f"```ansi\n{color_start}{marquee_frame}{color_end}\n```",
-                        "color": EMBED_COLOR
+                        "color": current_embed_color
                     }]
                 }
 
@@ -99,4 +109,4 @@ def run_green_marquee():
     print("⏰ 5小時安全交棒！")
 
 if __name__ == "__main__":
-    run_green_marquee()
+    run_multicolor_marquee()
