@@ -1,10 +1,9 @@
 import time
 import requests
 
-# ==================== 🎛️ 跑馬燈自訂控制面板 ====================
+# ==================== 🎛️ 跑馬燈速限狂飆面板 ====================
 WEBHOOK_URL = "https://discord.com/api/webhooks/1517792246374731857/mcJ-748jA7WdM4DD0KsKQg9URpD-BUOCw91-8ksZjOuz4b8-P0FCr7lJYK3cWMkCOKMq"
 
-# 【功能：加入 GIF 動圖】請把你想放的 GIF 圖片網址，完整複製貼在兩個引號中間
 GIF_URL = "https://cdn.discordapp.com/attachments/1191437102353744096/1517791192971214858/9154af24aeb650943a3c7e2ee38504b45ca51740d251f95bba16d093acebe5d7.gif?ex=6a3790b3&is=6a363f33&hm=5c294844fd02dcb5650436b5ed323e07ee1c690301c84246cb2a65109742d80c&"
 
 TEXT_LIST = [
@@ -14,8 +13,14 @@ TEXT_LIST = [
 ]
 
 TEXT_COLOR = "黃色" 
-SPEED = 2.3  
-EMBED_COLOR = 16753920  # 橘色卡片外框
+
+# 【核心突破 1：暴走步長】原本是 1 (慢速挪動)，現在改成 3！代表一次跨 3 個字，速度直接飆升 3 倍！
+STEP_SIZE = 3  
+
+# 【核心突破 2：極限延時】調整到 Discord 官方容許的最高速極限 2.0 秒，請絕對不要再調低了！
+SPEED = 2.0  
+
+EMBED_COLOR = 16753920  
 # ==============================================================
 
 COLOR_CODES = {
@@ -26,14 +31,14 @@ color_start = COLOR_CODES.get(TEXT_COLOR, "[1;37m")
 color_end = "[0m"
 display_width = 15  
 
-def run_gif_marquee():
-    print("🚀 正在發送帶有 GIF 的升級版跑馬燈卡片...")
+def run_fast_marquee():
+    print("🚀 正在發送【急速狂飆版】跑馬燈...")
     initial_payload = {
         "embeds": [{
             "title": "📢 系統進階跑馬燈", 
             "description": "```ansi\n[ 正在換班初始化... ]\n```", 
             "color": EMBED_COLOR,
-            "image": {"url": GIF_URL}  # 初始化加入 GIF
+            "image": {"url": GIF_URL}
         }]
     }
     post_res = requests.post(f"{WEBHOOK_URL}?wait=true", json=initial_payload)
@@ -45,25 +50,27 @@ def run_gif_marquee():
     message_url = f"{WEBHOOK_URL}/messages/{new_message_id}"
     
     start_time = time.time()
-    max_duration = 18000  # 5 小時換班限制
+    max_duration = 18000  
     
     while time.time() - start_time < max_duration:
         for current_text in TEXT_LIST:
             extended_text = current_text + " " * display_width + current_text
+            total_len = len(current_text) + display_width
             
-            for i in range(len(current_text) + display_width):
+            # 使用 STEP_SIZE 讓迴圈跳著走，達到物理加速效果
+            i = 0
+            while i < total_len:
                 if time.time() - start_time >= max_duration:
                     break
                     
                 marquee_frame = extended_text[i : i + display_width]
                 
-                # ── 核心：每次 patch 都帶著 image 欄位，確保 GIF 持續顯示 ──
                 payload = {
                     "embeds": [{
-                        "title": "📢 系統進階跑馬燈",
+                        "title": "📢 官方訊息",
                         "description": f"```ansi\n[ {color_start}{marquee_frame}{color_end} ]\n```",
                         "color": EMBED_COLOR,
-                        "image": {"url": GIF_URL}  # 這裡維持 GIF 顯示
+                        "image": {"url": GIF_URL}
                     }]
                 }
 
@@ -72,13 +79,16 @@ def run_gif_marquee():
                     if res.status_code == 429:
                         retry_after = res.json().get("retry_after", 5)
                         time.sleep(retry_after)
+                        # 如果卡住被官方處罰，本次不推進字數
+                        continue
                 except Exception as e:
                     print(f"💥 連線中斷: {e}")
                     return
 
                 time.sleep(SPEED) 
+                i += STEP_SIZE  # 每次跳過指定字數
                 
     print("⏰ 5小時安全交棒！")
 
 if __name__ == "__main__":
-    run_gif_marquee()
+    run_fast_marquee()
