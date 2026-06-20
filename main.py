@@ -3,75 +3,88 @@ import requests
 import random
 
 # ==================== 👑 至尊皇家自訂控制面板 ====================
+# ⭕ 已換上您最新的 Webhook 網址
 WEBHOOK_URL = "https://discord.com/api/webhooks/1517792246374731857/mcJ-748jA7WdM4DD0KsKQg9URpD-BUOCw91-8ksZjOuz4b8-P0FCr7lJYK3cWMkCOKMq"
 
-# 【至尊配備 1：更具動感的背景 GIF 網址】
-GIF_URL = "https://cdn.discordapp.com/attachments/1191437102353744096/1517791192971214858/9154af24aeb650943a3c7e2ee38504b45ca51740d251f95bba16d093acebe5d7.gif?ex=6a3790b3&is=6a363f33&hm=5c294844fd02dcb5650436b5ed323e07ee1c690301c84246cb2a65109742d80c&"
+# 🌟 完美的對稱星光大標題
+luxury_title = "⭐ ✨ 🌟【 噬月陌姎 🪐 皇家公告系統 】🌟 ✨ ⭐"
 
-# 【至尊配備 2：客製化雙軌道台詞（前後加入閃爍星光粒子）】
+# ⭕ 【您的原汁原味文字訊息】一字不差，絕對保持原始狀態
 TOP_TEXTS = [
-    "  🍀 歡迎來到~~噬月陌姎 🪐  ",
-    "  💬 文字聊天請至 ➔ 🔐幹話一堆《2026》  ",
-    "  🔊  語音聊天請至下方房間  "
+    " 🍀 歡迎來到~~噬月陌姎 ",
+    " 💬 文字聊天交請至🔐幹話一堆《2026》 ",
+    " 🔊 語音聊天請至下方房間 ",
+    " 🍀 歡迎來到~~噬月陌姎 "  # 配合第 4 張圖自動循環對齊
 ]
 
 BOTTOM_TEXTS = [
-    " ✨  一起交友聊天玩遊戲  ✨ ",
-    " 🤪  這裡人超憨超胖 🤪  ",
-    " 👋  歡迎加入!!!!   👋 "
+    " ✨ 一起交友聊天 ",
+    " 🤪 這裡人超憨超胖 ",
+    " 👋 歡迎加入 ",
+    " ✨ 一起交友聊天 "  # 配合第 4 張圖自動循環對齊
 ]
 
-STEP_SIZE = 3  # 每次前進字數
-SPEED = 2.0  # 維持 2.0 秒極速極限，流暢且安全
+# 🖼️ ⭕ 【已換上您提供的 4 張最新專屬 GIF 清單】
+GIF_LIST = [
+    "https://cdn.discordapp.com/attachments/1191437102353744096/1517843596714311822/9154af24aeb650943a3c7e2ee38504b45ca51740d251f95bba16d093acebe5d7.gif?ex=6a37c181&is=6a367001&hm=90ab184a60650d7c6532a64e9ad67d0b34d88fe5e992257857908330a0031e44&",
+    "https://cdn.discordapp.com/attachments/1191437102353744096/1517843596995461120/914721b1ffca10f9b1db81af635774d2fbf15e962e928e9f2579165932febfb2.gif?ex=6a37c181&is=6a367001&hm=4f60687b362dfe0bd64500927af4e902fec35b87e8f07158fc34a707984d42d1&",
+    "https://cdn.discordapp.com/attachments/1191437102353744096/1517843597427343471/e0fd6e9a768f22ee78382a1306cec42aa193a76a5dd3c7c959fdf816741fad90.gif?ex=6a37c181&is=6a367001&hm=f5dd615cce3602be58f3bef89fe52894e748482138e61941694ba458988f9b45&",
+    "https://cdn.discordapp.com/attachments/1191437102353744096/1517843597746245712/e4c10bc2bf59f55a17dfb839c36c39a276b1ed8cbe6a00e78c7dc219ea5bb7aa.gif?ex=6a37c181&is=6a367001&hm=5d5c317da00fa8dddc2f21ebb3969b4e48f12819a2c6c2a5e362cc9332ded7f2&"
+]
+
+STEP_SIZE = 3  
+SPEED = 2.0  
 # ==============================================================
 
-# 至尊霓虹 RGB 顏色池
-EMBED_NEON_COLORS = [16711680, 65280, 255, 16776960, 16711935, 65535, 16777215]
-ANSI_COLORS = [
-    "[1;31m", "[1;32m", "[1;33m", "[1;34m", "[1;35m", "[1;36m", "[1;37m"
-]
+ANSI_COLORS = ["[1;31m", "[1;32m", "[1;33m", "[1;34m", "[1;35m", "[1;36m", "[1;37m"]
 color_end = "[0m"
 display_width = 18  
 
-def run_supreme_marquee():
-    print("💎 正在發送【至尊皇家璀璨電競版】公告...")
+# 黃、綠、粉紅、藍 四色霓虹色階
+COLOR_CONFIGS = [
+    {"text": "[1;33m", "embed": 16776960}, 
+    {"text": "[1;32m", "embed": 5763719},  
+    {"text": "[1;35m", "embed": 15418782},
+    {"text": "[1;36m", "embed": 3447003}
+]
+
+def run_perfect_combined_gif_rotation():
+    print("💎 正在發送【全新專屬網址 + 破解快取 GIF 四圖輪播版】公告...")
     
-    # 頂級奢華裝飾標題
-    luxury_title = "🔱 ✨ 🌟【 歡迎加入噬月陌姎  】🌟 ✨ 🔱"
-    
-    # 1. 創立上層雙軌跑馬燈框
     marquee_payload = {
         "embeds": [{
             "title": luxury_title, 
-            "description": "```ansi\n ⚡ 皇家至尊電競系統正在全速加載 RGB 燈效...\n```", 
-            "color": 16777215
+            "description": "```ansi\n ⚡ 皇家系統正在為專屬公告載入動態特效...\n```", 
+            "color": 16777215,
+            "image": {"url": GIF_LIST[0]}
         }]
     }
     res_marquee = requests.post(f"{WEBHOOK_URL}?wait=true", json=marquee_payload)
     if res_marquee.status_code != 200:
-        print("❌ 跑馬燈建立失敗")
+        print("❌ 跑馬燈建立失敗，請確認 Webhook 網址是否正確。")
         return
     
     marquee_message_id = res_marquee.json().get("id")
     marquee_message_url = f"{WEBHOOK_URL}/messages/{marquee_message_id}"
     
-    # 2. 創立底層獨立 GIF（維持不閃爍）
-    gif_payload = {
-        "embeds": [{
-            "color": 16777215,
-            "image": {"url": GIF_URL}
-        }]
-    }
-    requests.post(WEBHOOK_URL, json=gif_payload)
-    
     start_time = time.time()
-    max_duration = 18000  # 5小時微軟接力限制
+    max_duration = 18000  
     loop_count = min(len(TOP_TEXTS), len(BOTTOM_TEXTS))
     
     while time.time() - start_time < max_duration:
         for idx in range(loop_count):
             top_raw = TOP_TEXTS[idx]
             bot_raw = BOTTOM_TEXTS[idx]
+            
+            # 提取當前要播的 GIF
+            current_raw_gif = GIF_LIST[idx % len(GIF_LIST)]
+            
+            # ── 🔥 核心外掛：在網址後方強行灌入動態時間戳記，徹底摧毀 Discord 圖片不換圖的快取機制！ ──
+            current_gif_with_timestamp = f"{current_raw_gif}&t={int(time.time())}"
+            
+            color_idx = idx % len(COLOR_CONFIGS)
+            color_start = COLOR_CONFIGS[color_idx]["text"]
+            current_embed_color = COLOR_CONFIGS[color_idx]["embed"]
             
             top_extended = top_raw + " " * display_width + top_raw
             bot_extended = bot_raw + " " * display_width + bot_raw
@@ -83,29 +96,23 @@ def run_supreme_marquee():
                 if time.time() - start_time >= max_duration:
                     break
                 
-                # 隨時為每一條框線、每一行文字隨機抽籤色彩，達到斑斕霓虹效果
                 c_border1 = random.choice(ANSI_COLORS)
                 c_border2 = random.choice(ANSI_COLORS)
-                c_text1 = random.choice(ANSI_COLORS)
-                c_text2 = random.choice(ANSI_COLORS)
-                current_embed_color = random.choice(EMBED_NEON_COLORS)
                 
-                # 擷取雙軌畫面
                 top_frame = top_extended[i : i + display_width]
-                
                 bot_pos = (max_len - i) % len(bot_extended)
                 bot_frame = bot_extended[bot_pos : bot_pos + display_width]
                 if len(bot_frame) < display_width:
                     bot_frame = (bot_frame + " " * display_width)[:display_width]
                 
-                # 【優化重點：外框同步加入 ANSI 炫彩顏色，框線也會跟著變色！】
+                # 📐 像素級古典實心對齊邊框
                 description_content = (
                     f"```ansi\n"
-                    f"{c_border1}▰▰▰▰▰▰ ✨ 星星所向  🌠  ▰▰▰▰▰▰{color_end}\n"
-                    f"  {c_text1}{top_frame}{color_end}\n"
+                    f"{c_border1}▰▰▰▰▰▰ ✨ 星星所向 (✨) ▰▰▰▰▰▰{color_end}\n"
+                    f"  {color_start}{top_frame}{color_end}\n"
                     f"{c_border1}▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰{color_end}\n"
-                    f"{c_border2}▰▰▰▰▰▰ 💫 星河皆是你  🌙  ▰▰▰▰▰▰{color_end}\n"
-                    f"  {c_text2}{bot_frame}{color_end}\n"
+                    f"{c_border2}▰▰▰▰▰ ✨ 星河皆是你 (✨) ▰▰▰▰▰{color_end}\n"
+                    f"  {color_start}{bot_frame}{color_end}\n"
                     f"{c_border2}▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰{color_end}\n"
                     f"```"
                 )
@@ -114,7 +121,8 @@ def run_supreme_marquee():
                     "embeds": [{
                         "title": luxury_title,
                         "description": description_content,
-                        "color": current_embed_color
+                        "color": current_embed_color,
+                        "image": {"url": current_gif_with_timestamp}
                     }]
                 }
 
@@ -124,8 +132,7 @@ def run_supreme_marquee():
                         retry_after = res.json().get("retry_after", 5)
                         time.sleep(retry_after)
                         continue
-                except Exception as e:
-                    print(f"💥 連線中斷: {e}")
+                except:
                     return
 
                 time.sleep(SPEED)
@@ -137,4 +144,4 @@ def run_supreme_marquee():
     print("⏰ 5小時豪華交棒！")
 
 if __name__ == "__main__":
-    run_supreme_marquee()
+    run_perfect_combined_gif_rotation()
