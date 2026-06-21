@@ -6,7 +6,7 @@ import random
 WEBHOOK_URL = "https://discord.com/api/webhooks/1517854084257026238/f1wxy5XswdIxpwyZM1nZSfTThS3PAbGVaqNv5RZRo8rPrkcnc-M-rqAgX5hP5UEeXTAn"
 
 # 【至尊配備 1：更具動感的背景 GIF 網址】
-GIF_URL = ""
+GIF_URL = "https://cdn.discordapp.com/attachments/1191437102353744096/1517843597427343471/e0fd6e9a768f22ee78382a1306cec42aa193a76a5dd3c7c959fdf816741fad90.gif?ex=6a386a41&is=6a3718c1&hm=bcd74d8fd2663461469f6df0a10edd7dd7f31c5797ab5503bf31b4a4422694b6&"
 
 # 【至尊配備 2：客製化雙軌道台詞（前後加入閃爍星光粒子）】
 TOP_TEXTS = [
@@ -34,7 +34,7 @@ color_end = "[0m"
 display_width = 18  
 
 def run_supreme_marquee():
-    print("💎 正在發送【至尊皇家璀璨電競版】公告...")
+    print("💎 正在發送【噬月陌姎】公告...")
     
     # 頂級奢華裝飾標題
     luxury_title = "🔱 ✨ 🌟【 歡迎加入噬月陌姎  】🌟 ✨ 🔱"
@@ -43,7 +43,7 @@ def run_supreme_marquee():
     marquee_payload = {
         "embeds": [{
             "title": luxury_title, 
-            "description": "```ansi\n ⚡ 皇家至尊電競系統正在全速加載 RGB 燈效...\n```", 
+            "description": "```ansi\n ⚡ 噬月陌姎系統正在全速加載 RGB 燈效...\n```", 
             "color": 16777215
         }]
     }
