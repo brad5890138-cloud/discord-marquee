@@ -5,10 +5,10 @@ import random
 # ==================== 👑 至尊皇家自訂控制面板 ====================
 WEBHOOK_URL = "https://discord.com/api/webhooks/1517854084257026238/f1wxy5XswdIxpwyZM1nZSfTThS3PAbGVaqNv5RZRo8rPrkcnc-M-rqAgX5hP5UEeXTAn"
 
-# 【至尊配備 1：更具動感的背景 GIF 網址】
-GIF_URL = "https://cdn.discordapp.com/attachments/1191437102353744096/1517843597427343471/e0fd6e9a768f22ee78382a1306cec42aa193a76a5dd3c7c959fdf816741fad90.gif?ex=6a386a41&is=6a3718c1&hm=bcd74d8fd2663461469f6df0a10edd7dd7f31c5797ab5503bf31b4a4422694b6&"
+# 【配備 1：更具動感的背景 GIF 網址】
+GIF_URL = "https://cdn.discordapp.com/attachments/1191437102353744096/1518964924062109696/49780eceb55add4efc653ee4f86340fb938636700559fe7e2345026692c51369.gif?ex=6a3bd5d2&is=6a3a8452&hm=482b2f605fdeb7d96f7fabf50a5de6af336cb0e578a3c6e0164cf7ec5ac45cd5&"
 
-# 【至尊配備 2：客製化雙軌道台詞（前後加入閃爍星光粒子）】
+# 【配備 2：客製化雙軌道台詞（前後加入閃爍星光粒子）】
 TOP_TEXTS = [
     "  🍀 歡迎來到~~噬月陌姎 🪐  ",
     "  💬 文字聊天請至 ➔ 🔐幹話一堆《2026》  ",
